@@ -1,8 +1,11 @@
 const grid = document.querySelector('#grid');
 const changeSize = document.querySelector('#change-size');
+const randomColorBtn = document.querySelector('#random-color-btn');
+const colorPicker = document.querySelector("#colorPicker");
 
 document.addEventListener('DOMContentLoaded', () => {
     let gridSize = 16;
+    let userColor = '#000000'; // Default color
 
     function createGrid (size){
         grid.innerHTML = '' //clears existing grid
@@ -18,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const gridSquares = document.querySelectorAll('.grid-square');
         gridSquares.forEach(square => {
             square.addEventListener('mouseover', () => {
-                square.style.backgroundColor = 'black'; // Change color on hover
+                square.style.backgroundColor = userColor; // Change color on hover
             });
         });
     }
@@ -39,4 +42,35 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 alert('Please enter a valid number greater than 0.');}
             });
+
+    function randomizeColor (){
+        const randomColor = Math.floor(Math.random() * 16777215);
+        // Convert the random value to hexadecimal and pad it with zeros if necessary
+        const hexColor = '#' + randomColor.toString(16).padStart(6, '0');
+        return hexColor;
+    }
+
+    randomColorBtn.addEventListener ('click', () => {
+        const gridSquares = document.querySelectorAll('.grid-square');
+        gridSquares.forEach(square => {
+            square.addEventListener('mouseover', () => {
+                square.style.backgroundColor = randomizeColor();
+            });
+        });
+    });
+
+    function changeColor (){
+        const colorPicker = document.getElementById('color-picker');
+        colorPicker.addEventListener('input', () => {
+            userColor = colorPicker.value;
+        })
+    }
+    changeColor();
+
+    const gridSquares = document.querySelectorAll('.grid-square');
+    gridSquares.forEach(square => {
+        square.addEventListener('mouseover', () => {
+            square.style.backgroundColor = userColor();
+        });
+    });
 });
