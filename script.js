@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     let gridSize = 16;
     let userColor = '#000000'; // Default color
+    let isRandomColorEnabled = false; // Track the state of random color
 
     function createGrid(size) {
         grid.innerHTML = ''; //clears existing grid
@@ -16,7 +17,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const gridSquares = document.querySelectorAll('.grid-square');
         gridSquares.forEach(square => {
             square.addEventListener('mouseover', () => {
-                square.style.backgroundColor = userColor; // Change color on hover
+                if (isRandomColorEnabled) {
+                    square.style.backgroundColor = randomizeColor();
+                } else {
+                    square.style.backgroundColor = userColor;
+                }
             });
         });
     }
@@ -41,12 +46,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const randomColorBtn = document.getElementById('random-color-btn');
     randomColorBtn.addEventListener('click', () => {
-        const gridSquares = document.querySelectorAll('.grid-square');
-        gridSquares.forEach(square => {
-            square.addEventListener('mouseover', () => {
-                square.style.backgroundColor = randomizeColor();
-            });
-        });
+        isRandomColorEnabled = !isRandomColorEnabled; // Toggle the state
+        randomColorBtn.textContent = isRandomColorEnabled ? 'Disable Random Color' : 'Enable Random Color';
     });
 
     function changeColor() {
@@ -56,4 +57,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     changeColor();
+
+    const clearGridButton = document.querySelector('#clear-grid');
+
+    clearGridButton.addEventListener('click', () => {
+        const gridSquares = document.querySelectorAll('.grid-square');
+        gridSquares.forEach(square => {
+            square.style.backgroundColor = '#ccc'; // Reset background color to white
+        });
+    });
 });
